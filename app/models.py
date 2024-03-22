@@ -45,21 +45,6 @@ class Order(models.Model):
         user_cart.is_ordered = True
         user_cart.save()
 
-@receiver(post_save, sender=Order)
-def update_daily_data(sender, instance, created, **kwargs):
-    if created:
-        # Calculate revenue for today
-        today_revenue = Order.objects.filter(created_at__date=timezone.now().date()).aggregate(total_revenue=Sum('total_amount'))['total_revenue'] or 0
-        
-        # Save or update daily revenue data
-        daily_data, _ = DailyData.objects.get_or_create(date=timezone.now().date())
-        if today_revenue is not None:  # Check if revenue is not None
-            daily_data.revenue = today_revenue  # Set the revenue field
-            daily_data.save()
-        else:
-            # Handle case where revenue is None
-            # For example, you could set a default value or log the issue
-            pass
 
 
 class DailyData(models.Model):

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Lists</title>
+    
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'card.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center">List of Products</h1>
+        <div class="row" id="product-list">
+            <!-- <div class="our_solution_category">
+                <div class="solution_cards_box">
+                    
+                    {% for product in page_obj %}
+                    
+                    <div class="solution_card">
+                        <div class="hover_color_bubble"></div>
+                        <div class="so_top_icon">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        </div>
+                        <div class="solu_title">
+                            <h3>{{ product.name }}</h3>
+                        </div>
+                        <div class="solu_description">
+                            <p>{{ product.description }}</p>
+                            <p>${{ product.price }}</p>
+                            <p>Seller: {{ product.seller.username }}</p>
+                            <button type="button" class="read_more_btn">Read More</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div> -->
+            
+         
+            {% for product in page_obj %}
+            <div class="col-md-4 mb-4">
+                <div class="card ">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-text">${{ product.price }}</p>
+                        <!-- <p class="card-text">Seller: {{ product.seller.username }}</p> -->
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <input type="hidden" id="current-page" value="{{ page_obj.number }}">
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            function loadMoreProducts() {
+                var nextPage = parseInt($('#current-page').val()) + 1;
+                $.get('?page=' + nextPage, function(data) {
+                    $('#product-list').append($(data).find('#product-list').html());
+                    $('#current-page').val(nextPage);
+                });
+            }
+
+            $(window).scroll(function() {
+                if($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                    loadMoreProducts();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

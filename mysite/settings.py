@@ -96,7 +96,7 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 CELERY_BEAT_SCHEDULE = {
     'calculate_daily_revenue': {
         'task': 'app.tasks.calculate_daily_revenue',
-        'schedule': 50,  
+        'schedule': timedelta(hours=24),
     },
 }
 

@@ -64,7 +64,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 class DailyDataViewSet(viewsets.ModelViewSet):
     queryset = DailyData.objects.all()
-    serializer_class = DailyDataSerializer
+    serializer_class = DailyDataSerializer # Auto create by celery
 
 
 
